@@ -84,5 +84,5 @@ __all__ = [
 __author__ = 'Nathan Jarjarbin'
 __email__ = 'nathan.amaraggi@epitech.eu'
 __description__ = "CLI Game Engine"
-__version__ = "0.0.1.0"
+__version__ = "0.1.1"
 __license__ = "GPL"
