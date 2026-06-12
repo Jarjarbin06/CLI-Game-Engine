@@ -27,10 +27,5 @@ class ErrorAssertion(Error):
                 link (tuple[str, int | None] | None, optional): The link to where the error comes from (file and line).
         """
 
-        self.message : str = message
-        self.error : str = "\nErrorAssertion"
-        self.link_data : tuple[str, int] | None = link
-        self.link : str | None = None
-
-        self.create_link()
-        self.log()
+        super().__init__(message, link=link)
+        self.error = "\nErrorAssertion"

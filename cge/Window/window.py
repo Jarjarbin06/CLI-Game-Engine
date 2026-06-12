@@ -23,14 +23,16 @@ class Window:
     def __init__(self):
         """
         """
+        console_size: tuple[int, int] = Console.get_size()
         self.scenes: dict[int, Scene] = {}
         self.current_scene_key: int = -1
-        self.size: Vec2 = Vec2(100, 10)
+        self.size: Vec2 = Vec2(console_size[0] - 4, console_size[1] - 4)
         self.render_window_cache: list[list[Char]] = [[Char(" ") for _ in range(self.size.x)] for _ in range(self.size.y)]
         # self.event : Event = None
         self.is_dirty: bool = False
         self.is_input_hidden: bool = True
         self.is_cursor_hidden: bool = True
+        Console.enter_alternate_screen(True)
 
     def __str__(self):
         """
@@ -101,13 +103,13 @@ class Window:
     def draw(self):
         """
         """
-        Console.print(Cursor.top() + (Color(Color.C_HIDDEN) if self.is_input_hidden else Color(Color.C_RESET)) + (Cursor.hide() if self.is_cursor_hidden else Cursor.show()), end="")
+        Console.print(Cursor.top() + (Cursor.hide() if self.is_cursor_hidden else Cursor.show()), end="")
         if self.current_scene_key != -1:
             for line in range(self.size.y):
                 Console.print(Cursor.move(line + 2, 3), start="\n", end="")
                 for column in range(self.size.x):
                     Console.print(Cursor.move_column(3 + column) + str(self.render_window_cache[line][column]), end="")
-        Console.print(Cursor.down(1))
+        Console.print(Cursor.down(1) + (Color(Color.C_HIDDEN) if self.is_input_hidden else Color(Color.C_RESET)), auto_reset=False)
         Time.wait(1)
 
     def draw_border(self):
@@ -122,4 +124,7 @@ class Window:
     def clear():
         """
         """
-        Console.execute("clear || clean || cls")
+        Console.execute("clear || clean || cls || true")
+
+    def quit(self):
+        Console.exit_alternate_screen(True)
